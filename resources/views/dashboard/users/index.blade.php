@@ -21,15 +21,14 @@
                     <table class="table table-striped" id="table_id">
                         <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Date registered</th>
-                                <th>Role</th>
+                                <th>id</th>
+                                <th>Name</th>
+                                <th>Email</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-
 
                         </tbody>
                     </table>
@@ -47,7 +46,7 @@
     <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ Route('dashboard.users.delete') }}" method="POST">
+            <form action="{{ route('dashboard.users.delete') }}" method="POST">
                 <div class="modal-content">
 
                     <div class="modal-body">
@@ -58,9 +57,6 @@
                             @csrf
                             <input type="hidden" name="id" id="id">
                         </div>
-
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info" data-dismiss="modal">{{ __('words.close') }}</button>
@@ -101,19 +97,15 @@
                         data: 'action',
                         name: 'action',
                         orderable: false,
-                        searchable: false
-
+                        searchable:false,
                     }
                 ]
             });
 
         });
 
-
-
-        $('#table_id tbody').on('click', '#deleteBtn', function(argument) {
+        $('#table_id tbody').on('click', '#deleteBtn', function() {
             var id = $(this).attr("data-id");
-            console.log(id);
             $('#deletemodal #id').val(id);
         })
     </script>

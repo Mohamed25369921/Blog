@@ -3,17 +3,18 @@
 @section('body')
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">{{__('words.dashboard')}}</li>
+        <li class="breadcrumb-item">{{ __('words.dashboard') }}</li>
         <li class="breadcrumb-item"><a href="#">{{ __('words.users') }}</a>
         </li>
-        <li class="breadcrumb-item active">{{ __('words.add user') }}</li>
+        <li class="breadcrumb-item active">{{ $user->name }}</li>
 
         <!-- Breadcrumb Menu-->
         <li class="breadcrumb-menu">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <a class="btn btn-secondary" href="#"><i class="icon-speech"></i></a>
                 <a class="btn btn-secondary" href="./"><i class="icon-graph"></i> &nbsp;{{ __('words.users') }}</a>
-                <a class="btn btn-secondary" href="#"><i class="icon-settings"></i> &nbsp;{{ __('words.add user') }}</a>
+                <a class="btn btn-secondary" href="#"><i class="icon-settings"></i>
+                    &nbsp;{{ __('words.edit user') }}</a>
             </div>
         </li>
     </ol>
@@ -22,9 +23,9 @@
     <div class="container-fluid">
 
         <div class="animated fadeIn">
-            <form action="{{ Route('dashboard.users.store') }}" method="post">
+            <form action="{{ route('dashboard.users.update', $user) }}" method="post">
                 @csrf
-                @method('POST')
+                @method('PUT')
                 <div class="row">
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -46,39 +47,32 @@
 
                             <div class="form-group col-md-12">
                                 <label>{{ __('words.name') }}</label>
-                                <input type="text" name="name" class="form-control" placeholder="{{ __('words.name') }}"
-                                   >
+                                <input type="text" name="name" class="form-control" value="{{ $user->name }}"
+                                    placeholder="{{ __('words.name') }}">
                             </div>
                             <div class="form-group col-md-12">
                                 <label>{{ __('words.email') }}</label>
                                 <input type="text" name="email" class="form-control"
-                                    placeholder="{{ __('words.email') }}" >
+                                    placeholder="{{ __('words.email') }}" value="{{ $user->email }}">
                             </div>
                             <div class="form-group col-md-12">
                                 <label>{{ __('words.status') }}</label>
                                 <select name="status" id="" class="form-control">
-                                  
-                                    <option value="admin">Admin</option>
-                                    <option value="writer" >Writer</option>
-                                    <option value="">Not Activated</option>
+                                    <option @if ($user->status == 'admin') selected @endif value="admin">Admin</option>
+                                    <option @if ($user->status == 'writer') selected @endif value="writer">Writer</option>
+                                    <option @if ($user->status == '') selected @endif value="">Not Activated
+                                    </option>
                                 </select>
-                               
+
                             </div>
                         </div>
-
-                        <div class="form-group col-md-12">
-                            <label>{{ __('words.password') }}</label>
-                            <input type="password" name="password" class="form-control"
-                                placeholder="{{ __('words.password') }}" >
-                        </div>
-
-
-
 
                         <div class="card-footer">
                             <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>
                                 Submit</button>
-                      
+
+                            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>
+                                Reset</button>
                         </div>
 
 

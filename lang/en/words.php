@@ -15,5 +15,7 @@ return [
 
     'dashboard' => 'Dashboard',
     'settings' => 'Settings',
+    'users' => 'Users',
+    'adduser' => 'Add User',
 
 ];
