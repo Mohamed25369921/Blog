@@ -439,7 +439,7 @@
     <script src="//localhost:35729/livereload.js"></script>
     
 
-    @stack('javascripts')
+@stack('javascripts')
 </body>
 
 </html>

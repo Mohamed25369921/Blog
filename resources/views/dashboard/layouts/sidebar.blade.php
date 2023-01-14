@@ -13,6 +13,13 @@
                 <a class="nav-link" href="{{ route('dashboard.users.index') }}"><i class="icon-user-follow"></i>{{ __('words.users') }}</a>
                 <a class="nav-link" href="{{ route('dashboard.users.create') }}"><i class="icon-people"></i>{{ __('words.adduser') }}</a>
             </li>
+            <li class="nav-title">
+            {{ __('words.users') }}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('dashboard.categories.index') }}"><i class="icon-user-follow"></i>{{ __('words.categories') }}</a>
+                <a class="nav-link" href="{{ route('dashboard.categories.create') }}"><i class="icon-people"></i>{{ __('words.addcategory') }}</a>
+            </li>
 
             <li class="nav-title">
                 مدیریت فایل ها
