@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Setting;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\UploadImage;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
+    use UploadImage;
+
     public function index(){
         return view('dashboard.settings');
     }
@@ -31,18 +34,12 @@ class SettingController extends Controller
         $setting->update($request->except('image','favicon','_token'));
 
         if ($request->has('logo')) {
-            $file = $request->file('logo');
-            $file_name = $file->getClientOriginalName();
-            $file->move(public_path('images'),$file_name);
-            $path = 'images/'.$file_name;
-            $setting->update(['logo' => $path]);
+            
+            $setting->update(['logo' => $this->upload($request->logo)]);
         }
         if ($request->has('favicon')) {
-            $file = $request->file('favicon');
-            $file_name = Str::uuid(). $file->getClientOriginalName();
-            $file->move(public_path('images'),$file_name);
-            $path = 'images/'.$file_name;
-            $setting->update(['favicon' => $path]);
+            
+            $setting->update(['favicon' => $this->upload($request->favicon)]);
         }
         return redirect()->route('dashboard.settings');
     }

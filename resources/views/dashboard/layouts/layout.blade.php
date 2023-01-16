@@ -437,7 +437,19 @@
 
     <!-- Grunt watch plugin -->
     <script src="//localhost:35729/livereload.js"></script>
-    
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
+
+
+    <script>
+        var allEditors = document.querySelectorAll('#editor');
+        for (var i = 0; i < allEditors.length; ++i) {
+            ClassicEditor.create(allEditors[i]);
+        }
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
 
 @stack('javascripts')
 </body>

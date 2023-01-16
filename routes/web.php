@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\Dashboard\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +38,14 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.' , 'middleware' => ['
 
     Route::get('categories/all',[CategoryController::class,'getCategoriesDatatable'])->name('categories.all');
     Route::post('categories/delete',[CategoryController::class,'delete'])->name('categories.delete');
+    
+    Route::get('posts/all',[PostController::class,'getPostsDatatable'])->name('posts.all');
+    Route::post('posts/delete',[PostController::class,'delete'])->name('posts.delete');
 
     Route::resources([
         'users' => UserController::class,
         'categories' => CategoryController::class,
+        'posts' => PostController::class,
     ]);
 });
 

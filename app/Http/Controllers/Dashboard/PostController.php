@@ -2,40 +2,46 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\UploadImage;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Post;
 use DataTables;
+use Hamcrest\Type\IsNumeric;
 
-
-class CategoryController extends Controller
+class PostController extends Controller
 {
+
     use UploadImage;
 
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        return view('dashboard.categories.index');
+        return view('dashboard.posts.index');
     }
 
-    public function getCategoriesDatatable(){
-        $categories = Category::select('*')->with('parents');
-        return Datatables::of($categories)
+    public function getPostsDatatable(){
+        $posts = Post::select('*')->with('category');
+        return Datatables::of($posts)
         ->addIndexColumn()
         ->addColumn('title', function ($row) {
            return $row->translate(app()->getLocale())->title;
         })
-        ->addColumn('parent', function ($row) {
-            return ($row->parent ==  0 ) ? trans('words.main category') : $row->parents->translate(app()->getLocale())->title;
+        ->addColumn('category_name', function ($row) {
+            return $row->category->translate(app()->getLocale())->title;
         })
         ->addColumn('action', function ($row) {
            return $btn = '
-                <a href="' . Route('dashboard.categories.edit', $row->id) . '"  class="edit btn btn-success btn-sm" ><i class="fa fa-edit"></i></a>
+                <a href="' . Route('dashboard.posts.edit', $row->id) . '"  class="edit btn btn-success btn-sm" ><i class="fa fa-edit"></i></a>
                 <a id="deleteBtn" data-id="' . $row->id . '" class="edit btn btn-danger btn-sm"  data-toggle="modal" data-target="#deletemodal"><i class="fa fa-trash"></i></a>';
         })
         
-        ->rawColumns(['title','parent','action'])
+        ->rawColumns(['title','category_name','action'])
         ->make(true);
     }
 
@@ -46,8 +52,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categories = Category::whereNull('parent')->orWhere('parent',0)->get();
-        return view('dashboard.categories.add',compact('categories'));
+        $categories = Category::all();
+        if( count($categories) > 0 ){
+            return view('dashboard.posts.add',compact('categories'));
+        }
+        abort(404);
     }
 
     /**
@@ -60,21 +69,23 @@ class CategoryController extends Controller
     {
         $data = [
             'image' => 'nullable|image|mimes:png,jpg,jpeg,svg,gif|max:2048',
-            'parent' => 'required',
         ];
 
         foreach (config('app.languages') as $key => $val) {
             $data[$key.'*.title'] = 'nullable|string';
             $data[$key.'*.content'] = 'nullable|string';
+            $data[$key.'*.smallDesc'] = 'nullable|string';
         }
-        $validated_data = $request->validate($data);
-        $category = Category::create($request->except('image','_token'));
+        $request->validate($data);
+
+        $post = Post::create($request->except('image','_token'));
 
         if ($request->has('image')) {
             $path = $this->upload($request->image);
-            $category->update(['image' => $path]);
+            $post->update(['image' => $path]);
         }
-        return redirect()->route('dashboard.categories.index');
+        return redirect()->route('dashboard.posts.index');
+
     }
 
     /**
@@ -94,10 +105,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Post $post)
     {
-        $categories = Category::whereNull('parent')->orWhere('parent',0)->get();
-        return view('dashboard.categories.edit',compact('category','categories'));
+        $categories = Category::all();;
+        return view('dashboard.posts.edit',compact('categories','post'));
     }
 
     /**
@@ -107,30 +118,26 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Post $post)
     {
-        
         $data = [
             'image' => 'nullable|image|mimes:png,jpg,jpeg,svg,gif|max:2048',
-            'parent' => 'required',
         ];
-        
+
         foreach (config('app.languages') as $key => $val) {
             $data[$key.'*.title'] = 'nullable|string';
             $data[$key.'*.content'] = 'nullable|string';
+            $data[$key.'*.smallDesc'] = 'nullable|string';
         }
         $request->validate($data);
-        $category->update($request->except('image','_token'));
+
+        $post->update($request->except('image','_token'));
 
         if ($request->has('image')) {
-            $file = $request->file('image');
-            $file_name = $file->getClientOriginalName();
-            $file->move(public_path('images'),$file_name);
-            $path = 'images/'.$file_name;
-            $category->update(['image' => $path]);
+            $path = $this->upload($request->image);
+            $post->update(['image' => $path]);
         }
-        return redirect()->route('dashboard.categories.index');
-
+        return redirect()->route('dashboard.posts.index');
     }
 
     /**
@@ -146,10 +153,9 @@ class CategoryController extends Controller
 
     public function delete(Request $request)
     {
-        if (is_numeric($request->id)) {
-            Category::where('parent',$request->id)->delete();
-            Category::find($request->id)->delete();
+        if(is_numeric($request->id)){
+            Post::find($request->id)->delete();
         }
-        return redirect()->route('dashboard.categories.index');
+        return redirect()->route('dashboard.posts.index');
     }
 }
