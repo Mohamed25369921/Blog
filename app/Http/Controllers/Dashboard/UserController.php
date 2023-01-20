@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('view',$this->user->find(auth()->user()->id));
         return view('dashboard.users.index');
     }
 
@@ -27,13 +34,23 @@ class UserController extends Controller
      */
 
     public function getUsersDatatable(){
-        $users = User::all();
+        $user = new User();
+        if (auth()->user()->can('viewAny')) {
+            $users = $user::all();
+        }else {
+            $users = $user::where('id',auth()->user()->id);
+        }
+        
         return Datatables::of($users)
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
-           return $btn = '
-                <a href="' . Route('dashboard.users.edit', $row->id) . '"  class="edit btn btn-success btn-sm" ><i class="fa fa-edit"></i></a>
-                <a id="deleteBtn" data-id="' . $row->id . '" class="edit btn btn-danger btn-sm"  data-toggle="modal" data-target="#deletemodal"><i class="fa fa-trash"></i></a>';
+           $btn = '';
+           if (auth()->user()->can('update',$row)) {
+            $btn .= '<a href="' . Route('dashboard.users.edit', $row->id) . '"  class="edit btn btn-success btn-sm" ><i class="fa fa-edit"></i></a>';
+           } elseif (auth()->user()->can('delete',$row)) {
+            $btn .= '<a id="deleteBtn" data-id="' . $row->id . '" class="edit btn btn-danger btn-sm"  data-toggle="modal" data-target="#deletemodal"><i class="fa fa-trash"></i></a>';
+           }
+           return $btn;
         })
         ->addColumn('status', function ($row) {
            return $row->status == null ? 'Not Activated' : $row->status;
@@ -44,6 +61,7 @@ class UserController extends Controller
     
     public function create()
     {
+        $this->authorize('create');
         return view('dashboard.users.add');
     }
 
@@ -55,6 +73,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('update', $this->user);
         $data = [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -90,6 +109,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('dashboard.users.edit',compact('user'));
     }
 
@@ -102,6 +122,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         $user->update($request->all());
         return redirect()->route('dashboard.users.index');
     }
@@ -119,6 +140,7 @@ class UserController extends Controller
 
     public function delete(Request $request)
     {
+        $this->authorize('delete', $this->user->find($request->id));
         if (is_numeric($request->id)) {
             User::find($request->id)->delete();
         }

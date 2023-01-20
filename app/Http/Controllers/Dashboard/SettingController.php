@@ -12,7 +12,15 @@ class SettingController extends Controller
 {
     use UploadImage;
 
+    protected $setting;
+
+    public function __construct(Setting $setting)
+    {
+        $this->setting = $setting;
+    }
+
     public function index(){
+        $this->authorize('viewAny', $this->setting);
         return view('dashboard.settings');
     }
 

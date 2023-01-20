@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Website\PostsController;
+use App\Http\Controllers\website\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +20,19 @@ use App\Http\Controllers\Dashboard\PostController;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
 Route::get('/test', function () {
     return 'test' ;
-}
-    
-);
+});
+
+// Website
+
+Route::get('/',[IndexController::class,'index'])->name('index');
+Route::get('/category/{category}',[CategoryController::class,'show'])->name('category');
+Route::get('/post/{post}',[PostsController::class,'show'])->name('post');
+
+
+// Dashboard
+
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.' , 'middleware' => ['auth','checkLogin']],function(){
     Route::get('settings', [SettingController::class,'index'])->name('settings');
     Route::get('/', function () {

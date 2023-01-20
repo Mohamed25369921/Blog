@@ -13,6 +13,13 @@ class CategoryController extends Controller
 {
     use UploadImage;
 
+    protected $category;
+
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
+
     
     public function index()
     {
@@ -30,9 +37,12 @@ class CategoryController extends Controller
             return ($row->parent ==  0 ) ? trans('words.main category') : $row->parents->translate(app()->getLocale())->title;
         })
         ->addColumn('action', function ($row) {
-           return $btn = '
+            if (auth()->user()->can('view',$row)) {
+                return $btn = '
                 <a href="' . Route('dashboard.categories.edit', $row->id) . '"  class="edit btn btn-success btn-sm" ><i class="fa fa-edit"></i></a>
                 <a id="deleteBtn" data-id="' . $row->id . '" class="edit btn btn-danger btn-sm"  data-toggle="modal" data-target="#deletemodal"><i class="fa fa-trash"></i></a>';
+            }
+           
         })
         
         ->rawColumns(['title','parent','action'])
@@ -46,6 +56,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('create',$this->category);
         $categories = Category::whereNull('parent')->orWhere('parent',0)->get();
         return view('dashboard.categories.add',compact('categories'));
     }
@@ -58,6 +69,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('update',$this->category);
         $data = [
             'image' => 'nullable|image|mimes:png,jpg,jpeg,svg,gif|max:2048',
             'parent' => 'required',
@@ -96,6 +108,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $this->authorize('update',$this->category);
+
         $categories = Category::whereNull('parent')->orWhere('parent',0)->get();
         return view('dashboard.categories.edit',compact('category','categories'));
     }
@@ -109,6 +123,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $this->authorize('update',$this->category);
         
         $data = [
             'image' => 'nullable|image|mimes:png,jpg,jpeg,svg,gif|max:2048',
@@ -146,6 +161,8 @@ class CategoryController extends Controller
 
     public function delete(Request $request)
     {
+        $this->authorize('delete',$this->category);
+
         if (is_numeric($request->id)) {
             Category::where('parent',$request->id)->delete();
             Category::find($request->id)->delete();

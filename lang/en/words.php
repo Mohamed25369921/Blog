@@ -4,18 +4,77 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Validation Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | The following language lines contain the default error messages used by
+    | the validator class. Some of these rules have multiple versions such
+    | as the size rules. Feel free to tweak each of these messages here.
     |
     */
 
     'dashboard' => 'Dashboard',
     'settings' => 'Settings',
-    'users' => 'Users',
-    'adduser' => 'Add User',
+    'translations'=>'Translations',
+    'users'=>'Users',
+    'not activated' => 'not activated',
+    'admin'=>'Admin',
+    'writer'=>'Writer',
+    'add user'=>'add user',
+    'main category'=>'main category',
+    'posts'=>'Posts',
+    'add post'=>'Add post',
+    'categories'=>'Categories',
+    'add category'=>'Add category',
+    'image'=>'Image',
+    'status'=>'Status',
+    'title'=>'Title',
+    'content'=>'Content',
+    'name'=>'Name',
+    'email'=>'Email',
+    'password'=>'Password',
+    'user settings'=>'User Settings',
+    'logout'=>'Logout',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
 
 ];

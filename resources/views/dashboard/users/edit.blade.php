@@ -55,16 +55,17 @@
                                 <input type="text" name="email" class="form-control"
                                     placeholder="{{ __('words.email') }}" value="{{ $user->email }}">
                             </div>
-                            <div class="form-group col-md-12">
-                                <label>{{ __('words.status') }}</label>
-                                <select name="status" id="" class="form-control">
-                                    <option @if ($user->status == 'admin') selected @endif value="admin">Admin</option>
-                                    <option @if ($user->status == 'writer') selected @endif value="writer">Writer</option>
-                                    <option @if ($user->status == '') selected @endif value="">Not Activated
-                                    </option>
-                                </select>
-
-                            </div>
+                            @can('viewAny')
+                                <div class="form-group col-md-12">
+                                    <label>{{ __('words.status') }}</label>
+                                    <select name="status" id="" class="form-control">
+                                        <option @if ($user->status == 'admin') selected @endif value="admin">Admin</option>
+                                        <option @if ($user->status == 'writer') selected @endif value="writer">Writer</option>
+                                        <option @if ($user->status == '') selected @endif value="">Not Activated
+                                        </option>
+                                    </select>
+                                </div>
+                            @endcan
                         </div>
 
                         <div class="card-footer">

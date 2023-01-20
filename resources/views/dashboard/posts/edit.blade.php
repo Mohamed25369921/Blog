@@ -39,10 +39,10 @@
                         <div class="card-header">
                             <strong>{{ __('words.posts') }}</strong>
                         </div>
+
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
                         <div class="card-block">
-
-
-
 
                             <div class="form-group col-md-12">
                                <img src="{{asset($post->image)}}" alt="" style="height: 50px">

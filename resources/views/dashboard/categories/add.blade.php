@@ -18,6 +18,11 @@
         </li>
     </ol>
 
+    @if (Session::has('error'))
+        <div class="alert alert-danger" style="margin: 20px">
+            {{ Session::get('error') }}
+        </div>
+    @endif
 
     <div class="container-fluid">
 

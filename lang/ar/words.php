@@ -4,18 +4,77 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Validation Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | The following language lines contain the default error messages used by
+    | the validator class. Some of these rules have multiple versions such
+    | as the size rules. Feel free to tweak each of these messages here.
     |
     */
 
     'dashboard' => 'لوحة التحكم',
-    'settings' => 'الإعدادات',
-    'users' => 'المستخدمون',
-    'adduser' => 'اضافة مستخدم',
+    'settings' => 'الاعدادات',
+    'translations'=>'الترجمات',
+    'users'=>'المستخدمين',
+    'not activated' => 'غير مفعل',
+    'admin'=>'مدير الموقع',
+    'writer'=>'كاتب',
+    'add user'=>'اضافة مستخدم',
+    'main category'=>'قسم رئيسي',
+    'posts'=>'المقالات',
+    'add post'=>'اضافة مقالة',
+    'categories'=>'الأقسام',
+    'add category'=>'إضافة قسم',
+    'image'=>'الصورة',
+    'status'=>'الحالة',
+    'title'=>'العنوان',
+    'content'=>'الوصف',
+    'name'=>'الإسم',
+    'email'=>'البريد الإلكتروني',
+    'password'=>'رمز المرور',
+    'user settings'=>'اعدادات المستخدم',
+    'logout'=>'تسجيل الخروج',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
 
 ];
